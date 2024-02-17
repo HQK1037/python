@@ -82,9 +82,123 @@ class Solution:
                 hashtable.pop(s[index])  # 移出哈希表
             max_len = max(max_len, i-left+1)
         return max_len
+    # 至多包含K个不同字符的最长字串
+    def lengthOfLongerSubstringKdistinct(self,s:str,k:int)->int:
+        from collections import defaultdict
+        lookup = defaultdict(int)
+        start = 0 
+        end = 0
+        max_len = 0
+        counter = 0
+        while end < len(s):
+            if(lookup[s[end]]) == 0:
+                counter += 1
+            lookup[s[end]] += 1
+            end += 1
+            while counter > k:
+                if lookup[s[start]] == 1:
+                    counter -= 1
+                lookup[s[start]] -= 1
+                start += 1
+            max_len = max(max_len, end - start)
+        return max_len
+    #找到字符串中的所有字母异位词
+
+    #串联所有单词的字串
+    def findSubstring(self, s: str, words: list[str]) -> list[int]:
+        from collections import Counter
+        if not s or not words:return []
+        one_word = len(words[0])
+        all_len = len(words) * one_word
+        n = len(s)
+        words = Counter(words)
+        res = []
+        for i in range(0, n - all_len + 1):
+            tmp = s[i:i+all_len]
+            c_tmp = []
+            for j in range(0, all_len, one_word):
+                c_tmp.append(tmp[j:j+one_word])
+            if Counter(c_tmp) == words:
+                res.append(i)
+        return res
+    # 滑动窗口
+    def findSubstring2(self, s: str, words: list[str]) -> list[int]:
+        from collections import Counter
+        if not s or not words:return []
+        one_word = len(words[0])
+        word_num = len(words)
+        n = len(s)
+        words = Counter(words)
+        res = []
+        for i in range(0, one_word):
+            cur_cnt = 0
+            left = i
+            right = i
+            cur_Counter = Counter()
+            while right + one_word <= n:
+                w = s[right:right + one_word]
+                right += one_word
+                cur_Counter[w] += 1
+                cur_cnt += 1
+                while cur_Counter[w] > words[w]:
+                    left_w = s[left:left+one_word]
+                    left += one_word
+                    cur_Counter[left_w] -= 1
+                    cur_cnt -= 1
+                if cur_cnt == word_num :
+                    res.append(left)
+        return res
+
+    def findSubstring3(self, s: str, words: list[str]) -> list[int]:
+        from collections import Counter
+        if not s or not words:return []
+        one_word = len(words[0])
+        word_num = len(words)
+        n = len(s)
+        if n < one_word:return []
+        words = Counter(words)
+        res = []
+        for i in range(0, one_word):
+            cur_cnt = 0
+            left = i
+            right = i
+            cur_Counter = Counter()
+            while right + one_word <= n:
+                w = s[right:right + one_word]
+                right += one_word
+                if w not in words:
+                    left = right
+                    cur_Counter.clear()
+                    cur_cnt = 0
+                else:
+                    cur_Counter[w] += 1
+                    cur_cnt += 1
+                    while cur_Counter[w] > words[w]:
+                        left_w = s[left:left+one_word]
+                        left += one_word
+                        cur_Counter[left_w] -= 1
+                        cur_cnt -= 1
+                    if cur_cnt == word_num :
+                        res.append(left)
+        return res
+
+    # 一维数组动态和
+    def dynamicSum(self,nums:list[int])->list[int]:
+        res=[]
+        if not nums:
+            return res
+        n = len(nums)
+        res.insert(0,nums[0])
+        for i in range(1,n):
+            res.insert(i,res[i-1] + nums[i]) 
+        return res
 instance = Solution()
 
 if __name__ == '__main__':
     # print(instance.lengthOfLongestSubstring("aabbcd"))
-    print(instance.minWindows("adfdcafa","cf"))
+    s = "ababaab"
+    words = ["ab","ba","ba"]
+    # nums = [1,2,3,4]
+    print(instance.findSubstring3(s,words))
+    # print(instance.dynamicSum(nums))
     # print(instance.lengthOfLongerSubstringTwoDistinct("adsaaaa"))
