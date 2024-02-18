@@ -1,3 +1,6 @@
+from typing import List
+from collections import defaultdict
+from collections import deque
 class Solution:
     # 最长无重复子串
     def lengthOfLongestSubstring(self, s):
@@ -5,7 +8,7 @@ class Solution:
         :type s: str
         :rtype: int
         """
-        from collections import defaultdict
+        
         lookup = defaultdict(int)
         start = 0
         end = 0
@@ -25,7 +28,6 @@ class Solution:
         return max_len
     # 最小覆盖子串
     def minWindows(self,s:'str',t:'str')-> 'str':
-        from collections import defaultdict
         lookup = defaultdict(int)
         for c in t:
             lookup[c] += 1
@@ -51,7 +53,6 @@ class Solution:
     
     # 至多包含两个不同字符的最长字串
     def lengthOfLongerSubstringTwoDistinct(self,s:str)-> int:
-        from collections import defaultdict
         lookup = defaultdict(int)
         start = 0 
         end = 0
@@ -84,7 +85,6 @@ class Solution:
         return max_len
     # 至多包含K个不同字符的最长字串
     def lengthOfLongerSubstringKdistinct(self,s:str,k:int)->int:
-        from collections import defaultdict
         lookup = defaultdict(int)
         start = 0 
         end = 0
@@ -105,7 +105,7 @@ class Solution:
     #找到字符串中的所有字母异位词
 
     #串联所有单词的字串
-    def findSubstring(self, s: str, words: list[str]) -> list[int]:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
         from collections import Counter
         if not s or not words:return []
         one_word = len(words[0])
@@ -122,7 +122,7 @@ class Solution:
                 res.append(i)
         return res
     # 滑动窗口
-    def findSubstring2(self, s: str, words: list[str]) -> list[int]:
+    def findSubstring2(self, s: str, words: List[str]) -> List[int]:
         from collections import Counter
         if not s or not words:return []
         one_word = len(words[0])
@@ -149,7 +149,7 @@ class Solution:
                     res.append(left)
         return res
 
-    def findSubstring3(self, s: str, words: list[str]) -> list[int]:
+    def findSubstring3(self, s: str, words: List[str]) -> List[int]:
         from collections import Counter
         if not s or not words:return []
         one_word = len(words[0])
@@ -183,7 +183,7 @@ class Solution:
         return res
 
     # 一维数组动态和
-    def dynamicSum(self,nums:list[int])->list[int]:
+    def dynamicSum(self,nums:List[int])->List[int]:
         res=[]
         if not nums:
             return res
@@ -192,13 +192,33 @@ class Solution:
         for i in range(1,n):
             res.insert(i,res[i-1] + nums[i]) 
         return res
+    
+    # 跳跃游戏 动态规划dp + 双端队列（单调栈）
+    def maxResult(self, nums:List[int],k:int)->int:
+        n = len(nums)
+        dp = [0] *n
+        dp[0] = nums[0]
+        queue =deque([0])
+        for i in range(1,n):
+            while queue[0] < i-k:
+                queue.popleft()
+            dp[i] = nums[i] + dp[queue[0]]
+            while queue and dp[queue[-1]] < dp[i]:
+                queue.pop()
+            queue.append(i)
+        return dp[n-1]
+    
 instance = Solution()
 
 if __name__ == '__main__':
     # print(instance.lengthOfLongestSubstring("aabbcd"))
     s = "ababaab"
     words = ["ab","ba","ba"]
-    # nums = [1,2,3,4]
-    print(instance.findSubstring3(s,words))
+    # nums = [1,-1,-2,4,-7,3]
+    # k = 2
+    nums = [10,-5,-2,4,0,3]
+    k = 3
+    # print(instance.findSubstring3(s,words))
     # print(instance.dynamicSum(nums))
     # print(instance.lengthOfLongerSubstringTwoDistinct("adsaaaa"))
+    print(instance.maxResult(nums,k))
