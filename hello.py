@@ -214,8 +214,6 @@ if __name__ == '__main__':
     # print(instance.lengthOfLongestSubstring("aabbcd"))
     s = "ababaab"
     words = ["ab","ba","ba"]
-    # nums = [1,-1,-2,4,-7,3]
-    # k = 2
     nums = [10,-5,-2,4,0,3]
     k = 3
     # print(instance.findSubstring3(s,words))
