@@ -208,6 +208,23 @@ class Solution:
             queue.append(i)
         return dp[n-1]
     
+    #跳跃游戏 最小跳跃数
+    def jump(self,nums:List[int])->int:
+        n = len(nums)
+        maxPos = 0
+        end = 0
+        ans = 0
+        for i in range(0,n):
+            maxPos = max(maxPos, i + nums[i])
+            if i == end:
+                end = maxPos
+                ans += 1
+        return ans 
+
+            
+
+
+    
 instance = Solution()
 
 if __name__ == '__main__':
