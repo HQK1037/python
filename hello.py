@@ -223,6 +223,8 @@ class Solution:
     
 instance = Solution()
 
+
+
 if __name__ == '__main__':
     # print(instance.lengthOfLongestSubstring("aabbcd"))
     s = "ababaab"
