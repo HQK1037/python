@@ -221,15 +221,26 @@ class Solution:
                 ans += 1
         return ans 
     
+    def isMonotonic(self, nums: List[int]) -> bool:
+        n = len(nums)
+        for i in range(1,n):
+            if nums[i-1] < nums[i]:
+                dec = False
+            if nums[i-1] > nums[i]:
+                inc = False
+        return dec or inc
 instance = Solution()
+
+
 
 if __name__ == '__main__':
     # print(instance.lengthOfLongestSubstring("aabbcd"))
     s = "ababaab"
     words = ["ab","ba","ba"]
-    nums = [10,-5,-2,4,0,3]
+    nums = [1,2,2,3]
     k = 3
     # print(instance.findSubstring3(s,words))
     # print(instance.dynamicSum(nums))
     # print(instance.lengthOfLongerSubstringTwoDistinct("adsaaaa"))
-    print(instance.maxResult(nums,k))
+    # print(instance.maxResult(nums,k))
+    print(instance.isMonotonic(nums))
