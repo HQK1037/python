@@ -214,16 +214,12 @@ class Solution:
         maxPos = 0
         end = 0
         ans = 0
-        for i in range(0,n):
+        for i in range(n-1):
             maxPos = max(maxPos, i + nums[i])
             if i == end:
                 end = maxPos
                 ans += 1
         return ans 
-
-            
-
-
     
 instance = Solution()
 
