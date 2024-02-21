@@ -229,6 +229,23 @@ class Solution:
             if nums[i-1] > nums[i]:
                 inc = False
         return dec or inc
+    
+    #单调递增数字
+    def monotoneIncreasingDigits(self, n: int) -> int:
+        ans = n
+        arr = list(str(n))
+        max = -1
+        idx = -1 
+        for i in range(len(arr)-1):
+            if max < int(arr[i]):
+                max = int(arr[i])
+                idx = i
+            if arr[i] > arr[i+1]:
+                arr[idx] = str(int(arr[idx]) - 1)
+                for j in range(idx + 1,len(arr)):
+                    arr[j] = '9'
+        return int(str(arr))
+
 instance = Solution()
 
 
@@ -238,9 +255,10 @@ if __name__ == '__main__':
     s = "ababaab"
     words = ["ab","ba","ba"]
     nums = [1,2,2,3]
+    num = 1234
     k = 3
     # print(instance.findSubstring3(s,words))
     # print(instance.dynamicSum(nums))
     # print(instance.lengthOfLongerSubstringTwoDistinct("adsaaaa"))
     # print(instance.maxResult(nums,k))
-    print(instance.isMonotonic(nums))
+    print(instance.monotoneIncreasingDigits(10))
