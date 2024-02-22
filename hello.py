@@ -1,6 +1,11 @@
 from typing import List
 from collections import defaultdict
 from collections import deque
+
+class ListNode:
+    def __init__(self,val=0,next=None):
+        self.val = val
+        self.next = next
 class Solution:
     # 最长无重复子串
     def lengthOfLongestSubstring(self, s):
@@ -244,7 +249,51 @@ class Solution:
                 arr[idx] = str(int(arr[idx]) - 1)
                 for j in range(idx + 1,len(arr)):
                     arr[j] = '9'
-        return int(str(arr))
+        return int(''.join(arr))
+    
+    #重排链表
+    def reorderList(self,head:ListNode)->ListNode:
+        if not head or not head.next:
+            return
+        # 找中间节点
+        slow = fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # 反转
+        pre,cur =None, slow.next
+        slow.next = None
+        while cur:
+            next_node = cur.next
+            cur.next = pre
+            pre = cur
+            cur = next_node
+
+        #合并链表
+        p1,p2 = head,pre
+        while p2:
+            tmp1,tmp2 = p1.next,p2.next
+            p1.next = p2
+            p2.next = tmp1
+            p1,p2 = tmp1,tmp2
+    def creatList(self,nums):
+        if not nums:
+            return None
+        
+        head = ListNode(nums[0])
+        cur = head
+        for num in nums[1:]:
+            cur.next = ListNode(num)
+            cur = cur.next
+        return head
+    def printList(self,head):
+        cur = head
+        while cur:
+            print(cur.val,end = " ")
+            cur = cur.next
+        print()
+
 
 instance = Solution()
 
@@ -254,11 +303,14 @@ if __name__ == '__main__':
     # print(instance.lengthOfLongestSubstring("aabbcd"))
     s = "ababaab"
     words = ["ab","ba","ba"]
-    nums = [1,2,2,3]
-    num = 1234
-    k = 3
+    nums = [1,2,3,4,5]
+    # num = 1234
+    # k = 3
     # print(instance.findSubstring3(s,words))
     # print(instance.dynamicSum(nums))
     # print(instance.lengthOfLongerSubstringTwoDistinct("adsaaaa"))
     # print(instance.maxResult(nums,k))
-    print(instance.monotoneIncreasingDigits(10))
+    # print(instance.monotoneIncreasingDigits(10))
+    head =instance.creatList(nums)
+    instance.reorderList(head)
+    instance.printList(head)
