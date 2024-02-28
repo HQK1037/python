@@ -294,6 +294,39 @@ class Solution:
             cur = cur.next
         print()
 
+    # BFS: 队列  DFS：栈
+    def canReachBFS(self, arr: List[int], start: int) -> bool:
+        if arr[start] == 0:
+            return True
+
+        n = len(arr)
+        used = {start}
+        q = deque([start])
+
+        while len(q) > 0:
+            u = q.popleft()
+            for v in [u + arr[u], u - arr[u]]:
+                if 0 <= v < n and v not in used:
+                    if arr[v] == 0:
+                        return True
+                    q.append(v)
+                    used.add(v)
+        
+        return False
+    
+    def canReachDFS(self, arr: List[int], start: int) -> bool:
+        def DFS(arr:List[int],start:int,visited:deque[bool]):
+            if start < 0 or start >= len(arr) or visited[start]:
+                return False
+            if arr[start] == 0:
+                return True
+            visited[start] = True
+            return DFS(arr,start-arr[start],visited) or DFS(arr,start+arr[start],visited)
+        n = len(arr)
+        visited = deque(n*[False])
+        return DFS(arr,start,visited)
+
+
 
 instance = Solution()
 
@@ -304,6 +337,8 @@ if __name__ == '__main__':
     s = "ababaab"
     words = ["ab","ba","ba"]
     nums = [1,2,3,4,5]
+    arr = [4,2,3,0,3,1,2]
+    start = 5
     # num = 1234
     # k = 3
     # print(instance.findSubstring3(s,words))
@@ -311,6 +346,7 @@ if __name__ == '__main__':
     # print(instance.lengthOfLongerSubstringTwoDistinct("adsaaaa"))
     # print(instance.maxResult(nums,k))
     # print(instance.monotoneIncreasingDigits(10))
-    head =instance.creatList(nums)
-    instance.reorderList(head)
-    instance.printList(head)
+    # head =instance.creatList(nums)
+    # instance.reorderList(head)
+    # instance.printList(head)
+    print(instance.canReachDFS(arr,start))
